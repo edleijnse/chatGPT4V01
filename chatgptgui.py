@@ -2,10 +2,6 @@ import tkinter as tk
 import openai
 import json
 
-# Replace 'YOUR_API_KEY' with your actual OpenAI API key
-API_KEY = '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'
-openai.api_key = API_KEY
-
 class GPTGUI:
     def __init__(self, root):
         self.root = root
