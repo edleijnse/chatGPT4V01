@@ -10,13 +10,13 @@ class GPTGUI:
         self.input_label = tk.Label(root, text="Enter your question:")
         self.input_label.pack()
 
-        self.input_field = tk.Text(root,width=40, height=5)
+        self.input_field = tk.Text(root,width=80, height=5)
         self.input_field.pack()
 
         self.output_label = tk.Label(root, text="Answer:")
         self.output_label.pack()
 
-        self.output_field = tk.Text(root, height=30, width=40)
+        self.output_field = tk.Text(root, height=30, width=80)
         self.output_field.pack()
 
         self.generate_button = tk.Button(root, text="Generate Answer", command=self.generate_answer)
@@ -25,28 +25,10 @@ class GPTGUI:
     def generate_answer(self):
         question = self.input_field.get("1.0", tk.END).strip()
         messages = [{"role": "user", "content": question}]
-        functions = [
-            {
-                "name": "get_current_weather",
-                "description": "Get the current weather in a given location",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "location": {
-                            "type": "string",
-                            "description": "The city and state, e.g. San Francisco, CA",
-                        },
-                        "unit": {"type": "string", "enum": ["celsius", "fahrenheit"]},
-                    },
-                    "required": ["location"],
-                },
-            }
-        ]
 
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=messages,
-
         )
         response_message = response["choices"][0]["message"]["content"]
         answer = response_message
