@@ -1,5 +1,7 @@
 import tkinter as tk
-import openai
+from openai import OpenAI
+
+client = OpenAI()
 import json
 
 class GPTGUI:
@@ -26,11 +28,10 @@ class GPTGUI:
         question = self.input_field.get("1.0", tk.END).strip()
         messages = [{"role": "user", "content": question}]
 
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=messages,
-        )
-        response_message = response["choices"][0]["message"]["content"]
+        response = client.chat.completions.create(model="gpt-4",
+        messages=messages)
+        print(response.choices[0].message.content)
+        response_message = response.choices[0].message.content
         answer = response_message
 
         self.output_field.delete('1.0', tk.END)  # Clear previous output
