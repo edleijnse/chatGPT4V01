@@ -12,7 +12,7 @@ class GPTGUI:
         self.input_label = tk.Label(root, text="Enter your question:")
         self.input_label.pack()
 
-        self.input_field = tk.Text(root,width=80, height=5)
+        self.input_field = tk.Text(root, width=80, height=5)
         self.input_field.pack()
 
         self.output_label = tk.Label(root, text="Answer:")
@@ -24,18 +24,23 @@ class GPTGUI:
         self.generate_button = tk.Button(root, text="Generate Answer", command=self.generate_answer)
         self.generate_button.pack()
 
+        self.clear_button = tk.Button(root, text="Clear Fields", command=self.clear_fields)  # New clear button
+        self.clear_button.pack()
+
     def generate_answer(self):
         question = self.input_field.get("1.0", tk.END).strip()
         messages = [{"role": "user", "content": question}]
-
-        response = client.chat.completions.create(model="gpt-4",
-        messages=messages)
-        print(response.choices[0].message.content)
-        response_message = response.choices[0].message.content
-        answer = response_message
-
+        try:
+            response = client.chat.completions.create(model="gpt-4", messages=messages)
+            response_message = response.choices[0].message.content
+            answer = response_message
+        except Exception as e:
+            answer = str(e)
         self.output_field.delete('1.0', tk.END)  # Clear previous output
         self.output_field.insert(tk.END, answer)
+    def clear_fields(self):  # New method to clear fields
+        self.input_field.delete('1.0', tk.END)
+        self.output_field.delete('1.0', tk.END)
 
 if __name__ == "__main__":
     root = tk.Tk()
